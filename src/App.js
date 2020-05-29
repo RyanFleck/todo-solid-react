@@ -1,5 +1,4 @@
 import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
 
 const fakeData = [
@@ -21,26 +20,57 @@ const fakeData = [
   },
 ];
 
-function App() {
-  return (
-    <div className="App">
-      {/* TODO section of the app. */}
-      <h1>ToDo</h1>
-      {fakeData.map((elem, key) =>
-        !elem.done ? (
-          <CheckListItem key={key} text={elem.text} done={false} />
-        ) : null
-      )}
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      todo: fakeData.slice(),
+    };
 
-      {/* DONE section of the app. */}
-      <h1>Done</h1>
-      {fakeData.map((elem, key) =>
-        elem.done ? (
-          <CheckListItem key={key} text={elem.text} done={true} />
-        ) : null
-      )}
-    </div>
-  );
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(text) {
+    this.state.todo.forEach((item, index) => {
+      if (item.text === text) {
+        const todo = this.state.todo.slice();
+        todo[index].done = !todo[index].done;
+        this.setState({ todo: todo });
+      }
+    });
+  }
+
+  render() {
+    return (
+      <div className="App">
+        {/* TODO section of the app. */}
+        <h1>ToDo</h1>
+        {this.state.todo.map((elem, key) =>
+          !elem.done ? (
+            <CheckListItem
+              key={key}
+              text={elem.text}
+              done={false}
+              changef={this.handleChange}
+            />
+          ) : null
+        )}
+
+        {/* DONE section of the app. */}
+        <h1>Done</h1>
+        {this.state.todo.map((elem, key) =>
+          elem.done ? (
+            <CheckListItem
+              key={key}
+              text={elem.text}
+              done={true}
+              changef={this.handleChange}
+            />
+          ) : null
+        )}
+      </div>
+    );
+  }
 }
 
 function CheckListItem(props) {
@@ -48,7 +78,11 @@ function CheckListItem(props) {
     <div className={"todo-item"}>
       <label className="todo-item-text">
         <label className={"todo-item-label"}>
-          <input type={"checkbox"} defaultChecked={props.done}></input>
+          <input
+            type={"checkbox"}
+            defaultChecked={props.done}
+            onChange={() => props.changef(props.text)}
+          ></input>
           <span className="pseudo-checkbox"></span>
         </label>
         {props.text}
