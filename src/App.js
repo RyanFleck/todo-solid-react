@@ -1,5 +1,12 @@
 import React from "react";
 import "./App.css";
+import {
+  LoginButton,
+  LogoutButton,
+  AuthButton,
+  Value,
+  LoggedIn,
+} from "@solid/react";
 
 const fakeData = [
   {
@@ -43,6 +50,14 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
+        {/* SOLID section of the app. */}
+        <AuthButton popup="popup.html" login="Login " logout="Log Out" />
+        <LoggedIn>
+          <h3>
+            Hello,
+            <Value src="user.name" />
+          </h3>
+        </LoggedIn>
         {/* TODO section of the app. */}
         <h1>ToDo</h1>
         {this.state.todo.map((elem, key) =>
@@ -55,7 +70,6 @@ class App extends React.Component {
             />
           ) : null
         )}
-
         {/* DONE section of the app. */}
         <h1>Done</h1>
         {this.state.todo.map((elem, key) =>
