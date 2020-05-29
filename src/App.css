@@ -1,38 +1,44 @@
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  text-align: left;
+  padding: 1em;
   font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.todo-item-label {
+  display: inline-block;
+  position: relative;
+  padding-left: calc(20px + 2vmin);
+  margin-bottom: 1vmin;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.todo-item-text {
+  display: inline-block;
+}
+
+.pseudo-checkbox {
+  cursor: pointer;
+  position: absolute;
+  left: 0;
+  bottom: -2vmin;
+  height: calc(10px + 2vmin);
+  width: calc(10px + 2vmin);
+  background-color: white;
+  border: 2px solid black;
+}
+
+
+input[type=checkbox] {
+  visibility: hidden;
+  display: none;
+}
+
+.pseudo-checkbox:hover {
+  background-color: rgb(163, 87, 163);
+}
+
+.todo-item-label input:checked~.pseudo-checkbox:after {
+  content: "✓";
+  position: absolute;
+  top: -5px;
+  left: 3px;
 }
