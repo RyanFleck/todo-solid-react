@@ -6,6 +6,7 @@ import {
   AuthButton,
   Value,
   LoggedIn,
+  LoggedOut,
 } from "@solid/react";
 
 const fakeData = [
@@ -54,10 +55,12 @@ class App extends React.Component {
         <AuthButton popup="popup.html" login="Login " logout="Log Out" />
         <LoggedIn>
           <h3>
-            Hello,
-            <Value src="user.name" />
+            Hello, <Value src="user.name" />
           </h3>
         </LoggedIn>
+        <LoggedOut>
+          <h3>Please Log In to save your todo list.</h3>
+        </LoggedOut>
         {/* TODO section of the app. */}
         <h1>ToDo</h1>
         {this.state.todo.map((elem, key) =>
@@ -82,6 +85,11 @@ class App extends React.Component {
             />
           ) : null
         )}
+        <br /> <br />
+        Profile for debugging:{" "}
+        <a href={"https://ryanfleck.solid.community/profile/card#me"}>
+          ryanfleck.solid.community/profile/card#me
+        </a>
       </div>
     );
   }

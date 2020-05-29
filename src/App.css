@@ -1,7 +1,6 @@
 .App {
   text-align: left;
   padding: 1em;
-  font-size: calc(10px + 2vmin);
   color: black;
 }
 
@@ -27,8 +26,7 @@
   border: 2px solid black;
 }
 
-
-input[type=checkbox] {
+input[type="checkbox"] {
   visibility: hidden;
   display: none;
 }
@@ -38,7 +36,7 @@ input[type=checkbox] {
   color: white;
 }
 
-.todo-item-label input:checked~.pseudo-checkbox:after {
+.todo-item-label input:checked ~ .pseudo-checkbox:after {
   content: "✓";
   position: absolute;
   top: -5px;
