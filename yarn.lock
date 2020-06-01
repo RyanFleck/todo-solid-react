@@ -2477,7 +2477,7 @@
     "@types/minimatch" "*"
     "@types/node" "*"
 
-"@types/http-link-header@^1.0.1":
+"@types/http-link-header@^1.0.0", "@types/http-link-header@^1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@types/http-link-header/-/http-link-header-1.0.1.tgz#411493fe06da4b9472fa4eeecc990ea92be8cc2a"
   integrity sha512-5h+Pqs4EHoMkY/fLva7XsYmh9IVQghQ6uWWil1FGCNI0WqjhI4g20doYsbT4kJ/G3GkAlQca4AIc9OexdUnzkg==
@@ -2517,6 +2517,14 @@
   resolved "https://registry.yarnpkg.com/@types/minimatch/-/minimatch-3.0.3.tgz#3dca0e3f33b200fc7d1139c0cd96c1268cadfd9d"
   integrity sha512-tHq6qdbT9U1IRSGf14CL0pUlULksvY9OZ+5eEgl1N7t+OA3tGvNpxJCzuKQlsNgCVwbAs670L1vcVQi8j9HjnA==
 
+"@types/n3@^1.1.1":
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/@types/n3/-/n3-1.1.6.tgz#0057547449e95118d4817c16c70df83ac6ddd65b"
+  integrity sha512-ZUZsoA13IkJOLZCXG9bgZGuzvGqhPQJ3CisPvZJ5Yfi+RxVtDCcezyTRw7olArfmxpD0UuEOtrIP/1PUCfkEBw==
+  dependencies:
+    "@types/node" "*"
+    "@types/rdf-js" "*"
+
 "@types/node@*":
   version "13.9.2"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-13.9.2.tgz#ace1880c03594cc3e80206d96847157d8e7fa349"
@@ -2547,17 +2555,17 @@
   resolved "https://registry.yarnpkg.com/@types/q/-/q-1.5.2.tgz#690a1475b84f2a884fd07cd797c00f5f31356ea8"
   integrity sha512-ce5d3q03Ex0sy4R14722Rmt6MT07Ua+k4FwDfdcToYJcMKNtRVQvJ6JCAPdAmAnbRb6CsX6aYb9m96NGod9uTw==
 
+"@types/rdf-js@*", "@types/rdf-js@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@types/rdf-js/-/rdf-js-3.0.0.tgz#7c45210d34b3ccc301b84f462bec5698d63bea1a"
+  integrity sha512-IUUXkMAt1iU7XhrNnjwPHeYkk5s71T8m95FoZmpjhi/3ngA0hyeQxST5i1Ul1y/dh/lePH1u4BwTH3ZKULYSIg==
+  dependencies:
+    "@types/node" "*"
+
 "@types/rdf-js@^2.0.1", "@types/rdf-js@^2.0.10", "@types/rdf-js@^2.0.11", "@types/rdf-js@^2.0.2", "@types/rdf-js@^2.0.4":
   version "2.0.12"
   resolved "https://registry.yarnpkg.com/@types/rdf-js/-/rdf-js-2.0.12.tgz#d305a0b6fd105e33f58d5c1b3de33ff8edcb3210"
   integrity sha512-NBzHFHp2vHOJkPlSqzsOrkEsD9grKn+PdFjZieIw59pc0FlRG6WEQAjQZvHzFxJlYzC6ZDCFyTA1wBvUnnzUQw==
-  dependencies:
-    "@types/node" "*"
-
-"@types/rdf-js@^3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@types/rdf-js/-/rdf-js-3.0.0.tgz#7c45210d34b3ccc301b84f462bec5698d63bea1a"
-  integrity sha512-IUUXkMAt1iU7XhrNnjwPHeYkk5s71T8m95FoZmpjhi/3ngA0hyeQxST5i1Ul1y/dh/lePH1u4BwTH3ZKULYSIg==
   dependencies:
     "@types/node" "*"
 
@@ -2575,6 +2583,11 @@
   dependencies:
     "@types/prop-types" "*"
     csstype "^2.2.0"
+
+"@types/solid-auth-client@^2.3.1":
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/@types/solid-auth-client/-/solid-auth-client-2.4.0.tgz#0bd55ee813146b90053bf50c2c5691867e5bed60"
+  integrity sha512-RsJ33lAZXiZn/p6dIcU9NNge5yCTPYE5lna51olYDqAR1QsLNXGTfWCi/k0TiwjorFrXA2+Qm6XQ8RQnP+RRkQ==
 
 "@types/sparqljs@^2.1.0":
   version "2.1.1"
@@ -8228,7 +8241,7 @@ n3@^0.9.1:
   resolved "https://registry.yarnpkg.com/n3/-/n3-0.9.1.tgz#430b547d58dc7381408c45784dd8058171903932"
   integrity sha1-QwtUfVjcc4FAjEV4TdgFgXGQOTI=
 
-n3@^1.0.0, n3@^1.0.4, n3@^1.1.1:
+n3@^1.0.0, n3@^1.0.4, n3@^1.1.1, n3@^1.2.1:
   version "1.3.7"
   resolved "https://registry.yarnpkg.com/n3/-/n3-1.3.7.tgz#b7503292ac449aafe32adeea361b33225e98e867"
   integrity sha512-IREbOmZyTlc34vxlp31ECT5jliRNZqHg3THhzrVd5bcSWGto5xsN8fF5xWKYXZr8TdZX+GXFkCxttTKM1N3JZg==
@@ -9964,6 +9977,11 @@ rdf-literal@^1.0.0:
     "@rdfjs/data-model" "^1.1.1"
     "@types/rdf-js" "^3.0.0"
 
+rdf-namespaces@^1.8.0:
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/rdf-namespaces/-/rdf-namespaces-1.8.0.tgz#f2e09abfb0d1972305719b2081fcb131c20aab5a"
+  integrity sha512-xwAYESS5iqRNbsroUP4LXnl37ATCYWQpWah1BJkflj+DEwZ2Tf7+gJG13AFa6dJAM1dy9CN5i9i9G0vLewwYkQ==
+
 rdf-quad@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/rdf-quad/-/rdf-quad-1.4.0.tgz#f564d63e3637d06883ec009d4de2dd17110d9e1c"
@@ -11676,6 +11694,17 @@ tr46@^1.0.1:
   integrity sha1-qLE/1r/SSJUZZ0zN5VujaTtwbQk=
   dependencies:
     punycode "^2.1.0"
+
+tripledoc@^4.3.4:
+  version "4.3.4"
+  resolved "https://registry.yarnpkg.com/tripledoc/-/tripledoc-4.3.4.tgz#5177e299d42c43a5c3f9a0ee26355e013b3c9463"
+  integrity sha512-B4BXBlEcN9CAd0M5S4T3GxGksZaq2cNQokjUhC7vIlhUHjRrdPS/ROxbVyoqw/yWc4PD+3Tl+N2fKJvJga000A==
+  dependencies:
+    "@types/http-link-header" "^1.0.0"
+    "@types/n3" "^1.1.1"
+    "@types/solid-auth-client" "^2.3.1"
+    http-link-header "^1.0.2"
+    n3 "^1.2.1"
 
 ts-pnp@1.1.6, ts-pnp@^1.1.6:
   version "1.1.6"

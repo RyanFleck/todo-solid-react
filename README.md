@@ -1,3 +1,20 @@
+# ToDo
+
+Built with **Solid** and **React**.
+
+## Libs (In Project or Interesting)
+
+- tripledoc
+- rdf-namespaces
+- [@solid/react-components](https://github.com/solid/react-components)
+- [simple-peer](https://github.com/feross/simple-peer)
+
+<br />
+<br />
+<br />
+
+## React Reference Stuff
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

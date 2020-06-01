@@ -1,13 +1,6 @@
 import React from "react";
 import "./App.css";
-import {
-  LoginButton,
-  LogoutButton,
-  AuthButton,
-  Value,
-  LoggedIn,
-  LoggedOut,
-} from "@solid/react";
+import { AuthButton, Value, LoggedIn, LoggedOut, List } from "@solid/react";
 
 const fakeData = [
   {
@@ -85,6 +78,8 @@ class App extends React.Component {
             />
           ) : null
         )}
+        <br /> <br />
+        <List src="user.friends.firstName" />
         <br /> <br />
         Profile for debugging:{" "}
         <a href={"https://ryanfleck.solid.community/profile/card#me"}>
