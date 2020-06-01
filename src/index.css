@@ -30,6 +30,20 @@ button:active {
   color: white;
 }
 
+button.pencil {
+  border: none;
+}
+
+button.pencil:hover {
+  color: purple;
+  background: white;
+}
+
+button.pencil:active {
+  color: green;
+  background: white;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;

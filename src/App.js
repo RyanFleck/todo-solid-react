@@ -28,10 +28,10 @@ class App extends React.Component {
       todo: fakeData.slice(),
     };
 
-    this.handleChange = this.handleChange.bind(this);
+    this.handleCheckedChange = this.handleCheckedChange.bind(this);
   }
 
-  handleChange(text) {
+  handleCheckedChange(text) {
     this.state.todo.forEach((item, index) => {
       if (item.text === text) {
         const todo = this.state.todo.slice();
@@ -40,6 +40,8 @@ class App extends React.Component {
       }
     });
   }
+
+  handleTextChange(oldText, newText) {}
 
   render() {
     return (
@@ -62,7 +64,7 @@ class App extends React.Component {
               key={key}
               text={elem.text}
               done={false}
-              changef={this.handleChange}
+              changef={this.handleCheckedChange}
             />
           ) : null
         )}
@@ -74,12 +76,10 @@ class App extends React.Component {
               key={key}
               text={elem.text}
               done={true}
-              changef={this.handleChange}
+              changef={this.handleCheckedChange}
             />
           ) : null
         )}
-        <br /> <br />
-        <List src="user.friends.firstName" />
         <br /> <br />
         Profile for debugging:{" "}
         <a href={"https://ryanfleck.solid.community/profile/card#me"}>
@@ -90,22 +90,25 @@ class App extends React.Component {
   }
 }
 
-function CheckListItem(props) {
-  return (
-    <div className={"todo-item"}>
-      <label className="todo-item-text">
-        <label className={"todo-item-label"}>
-          <input
-            type={"checkbox"}
-            defaultChecked={props.done}
-            onChange={() => props.changef(props.text)}
-          ></input>
-          <span className="pseudo-checkbox"></span>
+class CheckListItem extends React.Component {
+  render() {
+    return (
+      <div className={"todo-item"}>
+        <label className="todo-item-text">
+          <label className={"todo-item-label"}>
+            <input
+              type={"checkbox"}
+              defaultChecked={this.props.done}
+              onChange={() => this.props.changef(this.props.text)}
+            ></input>
+            <span className="pseudo-checkbox"></span>
+          </label>
+          {this.props.text}
+          <button className={"pencil"}>✎</button>
         </label>
-        {props.text}
-      </label>
-    </div>
-  );
+      </div>
+    );
+  }
 }
 
 export default App;
