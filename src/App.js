@@ -29,6 +29,8 @@ class App extends React.Component {
     };
 
     this.handleCheckedChange = this.handleCheckedChange.bind(this);
+    this.handleTextChange = this.handleTextChange.bind(this);
+    this.deleteItem = this.deleteItem.bind(this);
   }
 
   handleCheckedChange(text) {
@@ -41,7 +43,27 @@ class App extends React.Component {
     });
   }
 
-  handleTextChange(oldText, newText) {}
+  handleTextChange(oldText, newText) {
+    console.log(`Update from ${oldText} => ${newText}`);
+    this.state.todo.forEach((item, index) => {
+      if (item.text === oldText) {
+        const todo = this.state.todo.slice();
+        todo[index].text = newText;
+        this.setState({ todo: todo });
+      }
+    });
+  }
+
+  deleteItem(text) {
+    console.log(`DeleteItem ${text}`);
+    this.state.todo.forEach((item, index) => {
+      if (item.text === text) {
+        const todo = this.state.todo.slice();
+        todo.splice(index, 1);
+        this.setState({ todo: todo });
+      }
+    });
+  }
 
   render() {
     return (
@@ -65,6 +87,8 @@ class App extends React.Component {
               text={elem.text}
               done={false}
               changef={this.handleCheckedChange}
+              changet={this.handleTextChange}
+              delete={this.deleteItem}
             />
           ) : null
         )}
@@ -77,6 +101,8 @@ class App extends React.Component {
               text={elem.text}
               done={true}
               changef={this.handleCheckedChange}
+              changet={this.handleTextChange}
+              delete={this.deleteItem}
             />
           ) : null
         )}
@@ -107,6 +133,7 @@ class CheckListItem extends React.Component {
   updateWithNewValue(newText) {
     console.log(`Update with ${newText}`);
     this.setState({ editing: false });
+    this.props.changet(this.props.text, newText);
   }
 
   render() {
@@ -134,7 +161,10 @@ class CheckListItem extends React.Component {
               <button className={"pencil"} onClick={this.edit}>
                 ✎
               </button>
-              <button className={"delete"} onClick={this.delete}>
+              <button
+                className={"delete"}
+                onClick={() => this.props.delete(this.props.text)}
+              >
                 ×
               </button>
             </span>
