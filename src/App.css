@@ -7,7 +7,7 @@
 .todo-item-label {
   display: inline-block;
   position: relative;
-  padding-left: calc(20px + 2vmin);
+  padding-left: calc(25px + 2vmin);
   margin-bottom: 1vmin;
 }
 
@@ -51,7 +51,7 @@ div.todo-item:hover button.pencil {
 button.pencil {
   border: none;
   visibility: hidden;
-  padding-right: 0;
+  font-size: 1.1rem;
 }
 
 button.pencil:hover {
@@ -72,6 +72,7 @@ div.todo-item:hover button.delete {
 button.delete {
   border: none;
   visibility: hidden;
+  font-size: 1.2rem;
 }
 
 button.delete:hover {
@@ -96,6 +97,8 @@ span.todo-text {
 
 button#addItem {
   border: none;
+  font-size: 1.5rem;
+  padding-left: 0.1rem;
 }
 
 button#addItem:hover {
@@ -104,4 +107,29 @@ button#addItem:hover {
 }
 button#addItem:active {
   color: green;
+}
+/* Smartphone Portrait and Landscape */
+@media only screen and (max-device-width: 480px) {
+  div.todo-item button.pencil {
+    visibility: visible;
+  }
+  div.todo-item button.delete {
+    visibility: visible;
+  }
+  .buttons {
+    display: block;
+    width: 100%;
+    margin-top: 0.3rem;
+  }
+
+  .buttons > button {
+    border: 1px solid #eee;
+    padding: 0.3em 1em;
+    margin: 0.1em;
+    font-size: 1.2rem;
+  }
+
+  .todo-item {
+    margin-bottom: 1.3rem;
+  }
 }

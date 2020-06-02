@@ -179,15 +179,17 @@ class CheckListItem extends React.Component {
           ) : (
             <span>
               <span className={"todo-text"}>{this.props.text}</span>
-              <button className={"pencil"} onClick={this.edit}>
-                ✎
-              </button>
-              <button
-                className={"delete"}
-                onClick={() => this.props.delete(this.props.text)}
-              >
-                ×
-              </button>
+              <span className={"buttons"}>
+                <button className={"pencil"} onClick={this.edit}>
+                  ✎
+                </button>
+                <button
+                  className={"delete"}
+                  onClick={() => this.props.delete(this.props.text)}
+                >
+                  ×
+                </button>
+              </span>
             </span>
           )}
         </label>
