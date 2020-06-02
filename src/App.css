@@ -42,3 +42,49 @@ input[type="checkbox"] {
   top: -5px;
   left: 3px;
 }
+
+div.todo-item:hover button.pencil {
+  visibility: visible;
+}
+button.pencil {
+  border: none;
+  visibility: hidden;
+  padding-right: 0;
+}
+
+button.pencil:hover {
+  color: purple;
+  background: white;
+}
+
+button.pencil:active {
+  color: green;
+  background: white;
+}
+
+div.todo-item:hover button.delete {
+  visibility: visible;
+}
+
+button.delete {
+  border: none;
+  visibility: hidden;
+}
+
+button.delete:hover {
+  color: red;
+  background: white;
+}
+
+button.delete:active {
+  color: green;
+  background: white;
+}
+
+.checkTextBox {
+  display: inline-block;
+}
+
+span.todo-text {
+  margin-right: 1em;
+}

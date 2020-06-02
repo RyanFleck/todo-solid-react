@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import { AuthButton, Value, LoggedIn, LoggedOut, List } from "@solid/react";
+import { AuthButton, Value, LoggedIn, LoggedOut } from "@solid/react";
 
 const fakeData = [
   {
@@ -91,6 +91,24 @@ class App extends React.Component {
 }
 
 class CheckListItem extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      editing: false,
+    };
+    this.edit = this.edit.bind(this);
+    this.updateWithNewValue = this.updateWithNewValue.bind(this);
+  }
+
+  edit() {
+    this.setState({ editing: true });
+  }
+
+  updateWithNewValue(newText) {
+    console.log(`Update with ${newText}`);
+    this.setState({ editing: false });
+  }
+
   render() {
     return (
       <div className={"todo-item"}>
@@ -103,10 +121,60 @@ class CheckListItem extends React.Component {
             ></input>
             <span className="pseudo-checkbox"></span>
           </label>
-          {this.props.text}
-          <button className={"pencil"}>✎</button>
+          {this.state.editing ? (
+            <span>
+              <TextEditor
+                initialText={this.props.text}
+                returnResult={this.updateWithNewValue}
+              ></TextEditor>
+            </span>
+          ) : (
+            <span>
+              <span className={"todo-text"}>{this.props.text}</span>
+              <button className={"pencil"} onClick={this.edit}>
+                ✎
+              </button>
+              <button className={"delete"} onClick={this.delete}>
+                ×
+              </button>
+            </span>
+          )}
         </label>
       </div>
+    );
+  }
+}
+
+class TextEditor extends React.Component {
+  // props: initialText, returnResult(newText)
+
+  constructor(props) {
+    super(props);
+    this.state = { value: "" };
+    this.processText = this.processText.bind(this);
+    this.onChange = this.onChange.bind(this);
+  }
+
+  processText(event) {
+    event.preventDefault();
+    const text = this.state.value;
+    this.props.returnResult(text);
+  }
+
+  onChange(event) {
+    this.setState({ value: event.target.value });
+  }
+
+  render() {
+    return (
+      <form onSubmit={this.processText} className={"checkTextBox"}>
+        <input
+          type={"text"}
+          value={this.state.value || this.props.initialText}
+          onChange={this.onChange}
+        ></input>
+        <input type={"submit"} value={"update"}></input>
+      </form>
     );
   }
 }

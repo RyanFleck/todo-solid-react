@@ -4,7 +4,8 @@ body {
 
 html,
 body,
-button {
+button,
+input {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
@@ -28,20 +29,6 @@ button:hover {
 button:active {
   background: black;
   color: white;
-}
-
-button.pencil {
-  border: none;
-}
-
-button.pencil:hover {
-  color: purple;
-  background: white;
-}
-
-button.pencil:active {
-  color: green;
-  background: white;
 }
 
 code {
