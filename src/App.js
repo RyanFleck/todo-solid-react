@@ -169,30 +169,30 @@ class CheckListItem extends React.Component {
             ></input>
             <span className="pseudo-checkbox"></span>
           </label>
-          {this.state.editing ? (
-            <span>
-              <TextEditor
-                initialText={this.props.text}
-                returnResult={this.updateWithNewValue}
-              ></TextEditor>
-            </span>
-          ) : (
-            <span>
-              <span className={"todo-text"}>{this.props.text}</span>
-              <span className={"buttons"}>
-                <button className={"pencil"} onClick={this.edit}>
-                  ✎
-                </button>
-                <button
-                  className={"delete"}
-                  onClick={() => this.props.delete(this.props.text)}
-                >
-                  ×
-                </button>
-              </span>
-            </span>
-          )}
         </label>
+        {this.state.editing ? (
+          <span>
+            <TextEditor
+              initialText={this.props.text}
+              returnResult={this.updateWithNewValue}
+            ></TextEditor>
+          </span>
+        ) : (
+          <span>
+            <span className={"todo-text"}>{this.props.text}</span>
+            <span className={"buttons"}>
+              <button className={"pencil"} onClick={this.edit}>
+                ✎
+              </button>
+              <button
+                className={"delete"}
+                onClick={() => this.props.delete(this.props.text)}
+              >
+                ×
+              </button>
+            </span>
+          </span>
+        )}
       </div>
     );
   }

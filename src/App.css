@@ -43,6 +43,10 @@ input[type="checkbox"] {
   left: 3px;
 }
 
+.todo-item {
+  margin-bottom: 1rem;
+}
+
 /* pencil/edit button */
 
 div.todo-item:hover button.pencil {
@@ -51,7 +55,6 @@ div.todo-item:hover button.pencil {
 button.pencil {
   border: none;
   visibility: hidden;
-  font-size: 1.1rem;
 }
 
 button.pencil:hover {
@@ -72,7 +75,6 @@ div.todo-item:hover button.delete {
 button.delete {
   border: none;
   visibility: hidden;
-  font-size: 1.2rem;
 }
 
 button.delete:hover {
@@ -107,6 +109,10 @@ button#addItem:hover {
 }
 button#addItem:active {
   color: green;
+}
+
+.buttons {
+  display: inline-block;
 }
 /* Smartphone Portrait and Landscape */
 @media only screen and (max-device-width: 480px) {
