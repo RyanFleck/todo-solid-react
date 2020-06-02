@@ -36,7 +36,7 @@ input[type="checkbox"] {
   color: white;
 }
 
-.todo-item-label input:checked ~ .pseudo-checkbox:after {
+.todo-item-label input:checked~.pseudo-checkbox:after {
   content: "✓";
   position: absolute;
   top: -5px;
@@ -52,6 +52,7 @@ input[type="checkbox"] {
 div.todo-item:hover button.pencil {
   visibility: visible;
 }
+
 button.pencil {
   border: none;
   visibility: hidden;
@@ -107,6 +108,7 @@ button#addItem:hover {
   background: white;
   color: purple;
 }
+
 button#addItem:active {
   color: green;
 }
@@ -114,21 +116,37 @@ button#addItem:active {
 .buttons {
   display: inline-block;
 }
+
+input {
+  border: 1px solid #EEE;
+  padding: 2px 10px;
+}
+
+input[type=text] {
+  width: 50vw;
+}
+
+input[type=submit] {
+  background: #EEE;
+}
+
 /* Smartphone Portrait and Landscape */
 @media only screen and (max-device-width: 480px) {
   div.todo-item button.pencil {
     visibility: visible;
   }
+
   div.todo-item button.delete {
     visibility: visible;
   }
+
   .buttons {
     display: block;
     width: 100%;
     margin-top: 0.3rem;
   }
 
-  .buttons > button {
+  .buttons>button {
     border: 1px solid #eee;
     padding: 0.3em 1em;
     margin: 0.1em;
@@ -137,5 +155,10 @@ button#addItem:active {
 
   .todo-item {
     margin-bottom: 1.3rem;
+  }
+
+  input,
+  input[type=text] {
+    width: auto;
   }
 }
