@@ -43,6 +43,8 @@ input[type="checkbox"] {
   left: 3px;
 }
 
+/* pencil/edit button */
+
 div.todo-item:hover button.pencil {
   visibility: visible;
 }
@@ -62,6 +64,7 @@ button.pencil:active {
   background: white;
 }
 
+/* delete button */
 div.todo-item:hover button.delete {
   visibility: visible;
 }
@@ -87,4 +90,18 @@ button.delete:active {
 
 span.todo-text {
   margin-right: 1em;
+}
+
+/* add item button */
+
+button#addItem {
+  border: none;
+}
+
+button#addItem:hover {
+  background: white;
+  color: purple;
+}
+button#addItem:active {
+  color: green;
 }

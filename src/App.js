@@ -2,6 +2,7 @@ import React from "react";
 import "./App.css";
 import { AuthButton, Value, LoggedIn, LoggedOut } from "@solid/react";
 
+const textDefault = "New item";
 const fakeData = [
   {
     text: "plant thyme",
@@ -31,37 +32,50 @@ class App extends React.Component {
     this.handleCheckedChange = this.handleCheckedChange.bind(this);
     this.handleTextChange = this.handleTextChange.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
+    this.addItem = this.addItem.bind(this);
+  }
+
+  addItem() {
+    const todo = this.state.todo.slice();
+    todo.push({ text: textDefault, done: false });
+    this.setState({ todo: todo });
   }
 
   handleCheckedChange(text) {
-    this.state.todo.forEach((item, index) => {
+    const todo = this.state.todo.slice();
+    this.state.todo.some((item, index) => {
       if (item.text === text) {
-        const todo = this.state.todo.slice();
         todo[index].done = !todo[index].done;
         this.setState({ todo: todo });
+        return true;
       }
+      return false;
     });
   }
 
   handleTextChange(oldText, newText) {
     console.log(`Update from ${oldText} => ${newText}`);
-    this.state.todo.forEach((item, index) => {
+    const todo = this.state.todo.slice();
+    this.state.todo.some((item, index) => {
       if (item.text === oldText) {
-        const todo = this.state.todo.slice();
         todo[index].text = newText;
         this.setState({ todo: todo });
+        return true;
       }
+      return false;
     });
   }
 
   deleteItem(text) {
     console.log(`DeleteItem ${text}`);
-    this.state.todo.forEach((item, index) => {
+    const todo = this.state.todo.slice();
+    this.state.todo.some((item, index) => {
       if (item.text === text) {
-        const todo = this.state.todo.slice();
         todo.splice(index, 1);
         this.setState({ todo: todo });
+        return true;
       }
+      return false;
     });
   }
 
@@ -79,7 +93,9 @@ class App extends React.Component {
           <h3>Please Log In to save your todo list.</h3>
         </LoggedOut>
         {/* TODO section of the app. */}
-        <h1>ToDo</h1>
+        <h1>
+          <span>ToDo</span>
+        </h1>
         {this.state.todo.map((elem, key) =>
           !elem.done ? (
             <CheckListItem
@@ -92,6 +108,9 @@ class App extends React.Component {
             />
           ) : null
         )}
+        <button id={"addItem"} onClick={this.addItem}>
+          +
+        </button>
         {/* DONE section of the app. */}
         <h1>Done</h1>
         {this.state.todo.map((elem, key) =>
@@ -133,7 +152,9 @@ class CheckListItem extends React.Component {
   updateWithNewValue(newText) {
     console.log(`Update with ${newText}`);
     this.setState({ editing: false });
-    this.props.changet(this.props.text, newText);
+    if (newText !== "") {
+      this.props.changet(this.props.text, newText);
+    }
   }
 
   render() {
