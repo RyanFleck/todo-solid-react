@@ -1,6 +1,7 @@
 import React from "react";
 import "./App.css";
-import { AuthButton, Value, LoggedIn, LoggedOut } from "@solid/react";
+import { AuthButton, Value, LoggedIn, LoggedOut, useWebId } from "@solid/react";
+import { init } from "./solidFunctions";
 
 const textDefault = "New item";
 const fakeData = [
@@ -33,6 +34,10 @@ class App extends React.Component {
     this.handleTextChange = this.handleTextChange.bind(this);
     this.deleteItem = this.deleteItem.bind(this);
     this.addItem = this.addItem.bind(this);
+  }
+
+  componentDidMount() {
+    init(); // Init SOLID stuff.
   }
 
   addItem() {
@@ -126,13 +131,25 @@ class App extends React.Component {
           ) : null
         )}
         <br /> <br />
-        Profile for debugging:{" "}
-        <a href={"https://ryanfleck.solid.community/profile/card#me"}>
-          ryanfleck.solid.community/profile/card#me
-        </a>
+        <div>
+          Profile for debugging:{" "}
+          <a href={"https://ryanfleck.solid.community/profile/card#me"}>
+            ryanfleck.solid.community/profile/card#me
+          </a>
+        </div>
+        <WebID />
       </div>
     );
   }
+}
+
+function WebID(props) {
+  const webId = useWebId();
+  return (
+    <span>
+      Your WebID is <a href={webId}>{webId}</a>
+    </span>
+  );
 }
 
 class CheckListItem extends React.Component {
