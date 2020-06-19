@@ -1,7 +1,16 @@
 import React from "react";
 import "./App.css";
-import { AuthButton, Value, LoggedIn, LoggedOut, useWebId } from "@solid/react";
-import { init } from "./solidFunctions";
+import {
+  AuthButton,
+  Value,
+  LoggedIn,
+  LoggedOut,
+  useWebId,
+  useLDflex,
+  useLoggedIn,
+} from "@solid/react";
+import auth from "solid-auth-client";
+import data from "@solid/query-ldflex";
 
 const textDefault = "New item";
 const fakeData = [
@@ -23,6 +32,44 @@ const fakeData = [
   },
 ];
 
+/* Functions */
+
+async function authedPushArrayOfStuff() {
+  console.log("Attempting to get username...");
+  const session = await getCurrentSession();
+  const todos = session.webId.replace(
+    "/profile/card#me",
+    "/private/todos/todo.ttl#todo"
+  );
+  console.log(session.webId);
+  console.log(todos);
+  const todo = data[todos];
+
+  console.log(todo);
+}
+
+async function authedGetUsername() {
+  console.log("Attempting to get username...");
+  const session = await getCurrentSession();
+  console.log(`Using WebID ${session.webId}`);
+  const profile = data[session.webId];
+  const x = await profile.name;
+  console.log(`Name is ${x}`);
+}
+
+async function getCurrentSession() {
+  let session = auth.currentSession();
+  if (!session) {
+    console.log("No session detected...");
+    session = await auth.popupLogin("popup.html");
+    return session;
+  } else {
+    console.log("Session is present.");
+    return session;
+  }
+}
+
+/* Components */
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -37,7 +84,8 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    init(); // Init SOLID stuff.
+    //init(); // Init SOLID stuff.
+    authedGetUsername();
   }
 
   addItem() {

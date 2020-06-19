@@ -8,6 +8,7 @@ export async function init(id) {
   const name = await getName(id || webId);
   console.log(`Hello, ${name}`);
 
+  /*
   const docs = await getDocs(id || webId);
   console.log(`Got a docList:`);
   console.log(docs);
@@ -26,7 +27,7 @@ export async function init(id) {
     console.log(`Success? => ${addDocSuccess !== null ? true : false}`);
     console.log(addDocSuccess);
   }
-
+*/
   const json = await setAndGrabJSON(id || webId);
   console.log(json);
 }
@@ -38,7 +39,19 @@ async function setAndGrabJSON(webId) {
 
   const privateStuffRef = profile.getRef(solid.privateTypeIndex);
   const privateStuff = await fetchDocument(privateStuffRef);
-  privateStuff.
+  const privateTextDocs = privateStuff.findSubjects(
+    solid.forClass,
+    schema.TextDigitalDocument
+  );
+
+  if (privateTextDocs.length > 0) {
+    console.log("Got docs:");
+    console.log(privateTextDocs);
+  } else {
+    console.log("No docs returned, adding a ToDo document...");
+  }
+
+  return null;
 }
 
 export async function getName(webId) {
