@@ -36,36 +36,28 @@ const fakeData = [
 
 async function authedPushArrayOfStuff() {
   console.log("Attempting to get username...");
-  const session = await getCurrentSession();
-  const todos = session.webId.replace(
-    "/profile/card#me",
-    "/private/todos/todo.ttl#todo"
-  );
-  console.log(session.webId);
-  console.log(todos);
-  const todo = data[todos];
+  const session = await auth.currentSession();
+  if (session) {
+    const todos = session.webId.replace(
+      "/profile/card#me",
+      "/private/todos/todo.ttl#todo"
+    );
+    console.log(session.webId);
+    console.log(todos);
+    const todo = data[todos];
 
-  console.log(todo);
+    console.log(todo);
+  }
 }
 
 async function authedGetUsername() {
-  console.log("Attempting to get username...");
-  const session = await getCurrentSession();
-  console.log(`Using WebID ${session.webId}`);
-  const profile = data[session.webId];
-  const x = await profile.name;
-  console.log(`Name is ${x}`);
-}
-
-async function getCurrentSession() {
-  let session = auth.currentSession();
-  if (!session) {
-    console.log("No session detected...");
-    session = await auth.popupLogin("popup.html");
-    return session;
-  } else {
-    console.log("Session is present.");
-    return session;
+  const session = await auth.currentSession();
+  if (session) {
+    console.log(`Using WebID ${session.webId}`);
+    const profile = data[session.webId];
+    const name = await profile.name;
+    console.log(`Authorized user is ${name}`);
+    return name;
   }
 }
 
@@ -75,6 +67,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       todo: fakeData.slice(),
+      authenticated: false,
     };
 
     this.handleCheckedChange = this.handleCheckedChange.bind(this);
@@ -143,7 +136,7 @@ class App extends React.Component {
           </h3>
         </LoggedIn>
         <LoggedOut>
-          <h3>Please Log In to save your todo list.</h3>
+          <h3>Please Log In to start your todo list.</h3>
         </LoggedOut>
         {/* TODO section of the app. */}
         <h1>
