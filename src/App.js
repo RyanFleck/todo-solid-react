@@ -50,56 +50,11 @@ async function buttonLoadDocument() {
 async function buttonDeleteDocument() {
   console.log("Deleting document...");
 }
-
-async function authedGetUsername() {
-  const session = await auth.currentSession();
-  if (session) {
-    console.log(`Using WebID ${session.webId}`);
-    const profile = data[session.webId];
-    const name = await profile.name;
-    console.log(`Authorized user is ${name}`);
-    return name;
-  }
+async function buttonPurgeAllDocuments() {
+  console.log("Purging all documents...");
 }
-
-function DocumentFetchStoreTest() {
-  const [content, setContent] = useState({});
-  const authed = useLoggedIn();
-  const webId = useWebId();
-
-  console.log(`[TEST] DocumentFetchStoreTest for ${webId}`);
-  if (authed) {
-    console.log("User is logged in, using session...");
-    auth.currentSession().then((session) => {
-      const url = session.webId.replace(
-        "profile/card#me",
-        "tasks/todo.ttl#todo"
-      );
-      const todoPath = data[url];
-      const tasks = ["test one", "test two", "testing number three"];
-      /*
-      for (const t of tasks) {
-        todoPath["schema:itemListElement"].add(t.toString());
-        console.log("Added to document...");
-      }
-
-      loadTasks(todoPath).then((tasks) => {
-        console.log("GOT TASKS");
-        console.log(tasks);
-      });
-      */
-      checkForTasksThenLoadIfPresent();
-    });
-  }
-  return null;
-}
-
-async function loadTasks(path) {
-  const tasks = [];
-  for await (const task of path.schema_itemListElement) {
-    tasks.push(task.toString());
-  }
-  return tasks;
+async function buttonDisplayDocuments() {
+  console.log("Displaying documents...");
 }
 
 async function checkForTasksThenLoadIfPresent() {
@@ -165,8 +120,10 @@ async function checkForTasksThenLoadIfPresent() {
       newTodoObject.addString(schema.text, JSON.stringify(fakeData));
       newTodoObject.addDateTime(schema.dateCreated, new Date(Date.now()));
 
-      const success = await todoFileDoc.save([newTodoObject]);
-      console.log(`Saved file to POD? => ${success !== null ? true : false}`);
+      // Save new TODO file.
+
+      //const success = await todoFileDoc.save([newTodoObject]);
+      //console.log(`Saved file to POD? => ${success !== null ? true : false}`);
 
       const subjects = await todoFileDoc.findSubjects();
       console.log(`SUBJECTS FOUND: ${subjects.length}`);
@@ -307,6 +264,15 @@ class App extends React.Component {
           <button onClick={buttonSaveDocument}>Save Document</button>{" "}
           <button onClick={buttonLoadDocument}>Load Document</button>{" "}
           <button onClick={buttonDeleteDocument}>Delete Document</button>
+        </div>
+        <br />
+        <div>
+          <button onClick={buttonPurgeAllDocuments}>
+            Purge All TODO Documents
+          </button>{" "}
+          <button onClick={buttonDisplayDocuments}>
+            Display TODO Documents in POD
+          </button>
         </div>
       </div>
     );
