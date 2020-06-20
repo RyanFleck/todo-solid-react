@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
 import {
   AuthButton,
@@ -34,22 +34,6 @@ const fakeData = [
 
 /* Functions */
 
-async function authedPushArrayOfStuff() {
-  console.log("Attempting to get username...");
-  const session = await auth.currentSession();
-  if (session) {
-    const todos = session.webId.replace(
-      "/profile/card#me",
-      "/private/todos/todo.ttl#todo"
-    );
-    console.log(session.webId);
-    console.log(todos);
-    const todo = data[todos];
-
-    console.log(todo);
-  }
-}
-
 async function authedGetUsername() {
   const session = await auth.currentSession();
   if (session) {
@@ -61,7 +45,45 @@ async function authedGetUsername() {
   }
 }
 
+function DocumentFetchStoreTest() {
+  const [content, setContent] = useState({});
+  const authed = useLoggedIn();
+  console.log("[TEST] DocumentFetchStoreTest");
+  if (authed) {
+    console.log("User is logged in, using session...");
+    auth.currentSession().then((session) => {
+      const url = session.webId.replace(
+        "profile/card#me",
+        "tasks/todo.ttl#todo"
+      );
+      const todoPath = data[url];
+
+      const tasks = ["test one", "test two", "testing number three"];
+
+      for (const t of tasks) {
+        todoPath["schema:itemListElement"].add(t.toString());
+        console.log("Added to document...");
+      }
+
+      loadTasks(todoPath).then((tasks) => {
+        console.log("GOT TASKS");
+        console.log(tasks);
+      });
+    });
+  }
+  return null;
+}
+
+async function loadTasks(path) {
+  const tasks = [];
+  for await (const task of path.schema_itemListElement) {
+    tasks.push(task.toString());
+  }
+  return tasks;
+}
+
 /* Components */
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -138,6 +160,7 @@ class App extends React.Component {
         <LoggedOut>
           <h3>Please Log In to start your todo list.</h3>
         </LoggedOut>
+        <DocumentFetchStoreTest />
         {/* TODO section of the app. */}
         <h1>
           <span>ToDo</span>
