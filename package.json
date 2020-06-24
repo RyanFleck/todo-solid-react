@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@comunica/actor-rdf-resolve-hypermedia-qpf": "^1.13.0",
+    "@inrupt/solid-react-components": "^0.5.4",
     "@solid/context": "^1.1.0",
     "@solid/query-ldflex": "^2.11.2",
     "@solid/react": "^1.10.0",
@@ -15,6 +16,7 @@
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1",
     "solid-auth-client": "^2.4.1",
+    "styled-components": "^5.1.1",
     "tripledoc": "^4.3.4"
   },
   "scripts": {

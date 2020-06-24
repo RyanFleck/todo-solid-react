@@ -15,6 +15,7 @@ import data from "@solid/query-ldflex";
 import { fetchDocument, createDocument } from "tripledoc";
 import { solid, schema, foaf, space, rdf } from "rdf-namespaces";
 import { typeIndex } from "rdf-namespaces/dist/solid";
+import { getAppStorage } from "./utils/storage";
 
 const textDefault = "New item";
 const fakeData = [
@@ -40,6 +41,13 @@ const fakeData = [
 
 async function buttonInitDocument() {
   console.log("Initializing document...");
+  const session = await auth.currentSession();
+  const webId = session.webId;
+  if(session && webId){
+    const storage = await getAppStorage(webId);
+    console.log(`Storage is at ${storage}`)
+
+  }
 }
 async function buttonSaveDocument() {
   console.log("Saving document...");

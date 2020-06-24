@@ -1,9 +1,10 @@
 import data from "@solid/query-ldflex";
 import { AccessControlList } from "@inrupt/solid-react-components";
 import { resourceExists, createDoc, createDocument } from "./ldflex-helper";
-import { storageHelper, errorToaster, permissionHelper } from "../utils";
+import { storageHelper, permissionHelper } from "../utils";
+import { solidDataPath } from '../constan'
 
-const appPath = process.env.REACT_APP_TICTAC_PATH;
+const appPath = solidDataPath;
 
 /**
  * Creates a valid string that represents the application path. This is the
@@ -91,7 +92,7 @@ export const createInitialFiles = async (webId) => {
 
     return true;
   } catch (error) {
-    errorToaster(error.message, "Error");
+    console.error(error.message);
     return false;
   }
 };
