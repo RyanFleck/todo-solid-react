@@ -52,9 +52,61 @@ async function buttonDeleteDocument() {
 }
 async function buttonPurgeAllDocuments() {
   console.log("Purging all documents...");
+  const session = await auth.currentSession();
+  if (session) {
+    // Get profile
+    const webId = session.webId;
+    const webIdDoc = await fetchDocument(webId);
+    const profile = webIdDoc.getSubject(webId);
+
+    // Get private index document
+    const privateIndexRef = profile.getRef(solid.privateTypeIndex);
+    const privateIndex = await fetchDocument(privateIndexRef);
+
+    // Grab ToDo Document subjects.
+    const storage = profile.getRef(space.storage);
+    const todoFilePath = `${storage}private/tasks/todo.ttl`;
+    const todosDocument = await fetchDocument(todoFilePath);
+    const todosDocumentItems = todosDocument.findSubjects();
+
+    for (let i = 0; i < todosDocumentItems.length; i++) {
+      const text = await todosDocumentItems[i];
+      console.log(text.toString());
+    }
+    await todosDocument.save();
+  } else {
+    return null;
+  }
 }
+
 async function buttonDisplayDocuments() {
   console.log("Displaying documents...");
+  const session = await auth.currentSession();
+  if (session) {
+    // Get profile
+    const webId = session.webId;
+    const webIdDoc = await fetchDocument(webId);
+    const profile = webIdDoc.getSubject(webId);
+
+    // Get private index document
+    const privateIndexRef = profile.getRef(solid.privateTypeIndex);
+    const privateIndex = await fetchDocument(privateIndexRef);
+
+    // Grab ToDo Document subjects.
+    const storage = profile.getRef(space.storage);
+    const todoFilePath = `${storage}private/tasks/todo.ttl`;
+    const todosDocument = await fetchDocument(todoFilePath);
+    const todosDocumentItems = todosDocument.findSubjects();
+
+    for (let i = 0; i < todosDocumentItems.length; i++) {
+      const item = todosDocumentItems[i];
+      const itemRef = item.asRef();
+      console.log(`Item ${i} => ${item.getString()}`);
+    }
+    await todosDocument.save();
+  } else {
+    return null;
+  }
 }
 
 async function checkForTasksThenLoadIfPresent() {
