@@ -40,26 +40,37 @@ const fakeData = [
 /* Functions */
 
 async function buttonInitDocument() {
-  console.log("Initializing document...");
+  console.log("button => Initializing document...");
+
+  const testDoc = JSON.stringify(
+    {
+      paramOne: "This stores the first parameter",
+      paramTwo: "This is the second of three parameters",
+      paramThree: 3,
+    },
+    null,
+    2
+  );
+
   const session = await auth.currentSession();
   const webId = session.webId;
-  if(session && webId){
+  if (session && webId) {
+    // The path to this storage is stored in constants.js
     const storage = await getAppStorage(webId);
-    console.log(`Storage is at ${storage}`)
-
+    console.log(`Storage is at ${storage}`);
   }
 }
 async function buttonSaveDocument() {
-  console.log("Saving document...");
+  console.log("button => Saving document...");
 }
 async function buttonLoadDocument() {
-  console.log("Loading document...");
+  console.log("button => Loading document...");
 }
 async function buttonDeleteDocument() {
-  console.log("Deleting document...");
+  console.log("button => Deleting document...");
 }
 async function buttonPurgeAllDocuments() {
-  console.log("Purging all documents...");
+  console.log("button => Purging all documents...");
   const session = await auth.currentSession();
   if (session) {
     // Get profile
@@ -88,7 +99,7 @@ async function buttonPurgeAllDocuments() {
 }
 
 async function buttonDisplayDocuments() {
-  console.log("Displaying documents...");
+  console.log("button => Displaying documents...");
   const session = await auth.currentSession();
   if (session) {
     // Get profile

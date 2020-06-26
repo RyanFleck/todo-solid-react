@@ -2,7 +2,7 @@ import data from "@solid/query-ldflex";
 import { AccessControlList } from "@inrupt/solid-react-components";
 import { resourceExists, createDoc, createDocument } from "./ldflex-helper";
 import { storageHelper, permissionHelper } from "../utils";
-import { solidDataPath } from '../constan'
+import { solidDataPath } from "../constants";
 
 const appPath = solidDataPath;
 
@@ -14,6 +14,7 @@ const appPath = solidDataPath;
  * @returns {*}
  */
 export const buildPathFromWebId = (webId, path) => {
+  console.log(`exec => buildPathFromWebId( webId: ${webId}, path: ${path});`);
   if (!webId) return false;
   const domain = new URL(typeof webId === "object" ? webId.webId : webId)
     .origin;
@@ -25,6 +26,7 @@ export const buildPathFromWebId = (webId, path) => {
  * @returns {Promise<string>}
  */
 export const getAppStorage = async (webId) => {
+  console.log(`exec => getAppStorage( webId: ${webId} );`);
   const podStoragePath = await data[webId].storage;
   let podStoragePathValue =
     podStoragePath && podStoragePath.value.trim().length > 0
@@ -50,6 +52,7 @@ export const getAppStorage = async (webId) => {
  * @returns {Promise<boolean>} Returns whether or not there were any errors during the creation process
  */
 export const createInitialFiles = async (webId) => {
+  console.log(`exec => createInitialFiles( webId: ${webId} );`);
   try {
     // First, check if we have WRITE permission for the app
     const hasWritePermission = await permissionHelper.checkSpecificAppPermission(
@@ -61,15 +64,16 @@ export const createInitialFiles = async (webId) => {
     if (!hasWritePermission) return;
 
     // Get the default app storage location from the user's pod and append our path to it
-    const gameUrl = await storageHelper.getAppStorage(webId);
+    const documentUrl = await storageHelper.getAppStorage(webId);
 
     // Set up various paths relative to the game URL
-    const dataFilePath = `${gameUrl}data.ttl`;
-    const settingsFilePath = `${gameUrl}settings.ttl`;
+    const dataFilePath = `${documentUrl}data.ttl`;
+    const settingsFilePath = `${documentUrl}settings.ttl`;
 
     // Check if the tictactoe folder exists, if not then create it. This is where game files, the game inbox, and settings files are created by default
-    const gameFolderExists = await resourceExists(gameUrl);
-    if (!gameFolderExists) {
+    const docFolderExists = await resourceExists(documentUrl);
+    // https://vocab.org/open/#json "application/json"
+    if (!docFolderExists) {
       await createDoc(data, {
         method: "PUT",
         headers: {
@@ -96,5 +100,3 @@ export const createInitialFiles = async (webId) => {
     return false;
   }
 };
-
-export const checkAndInitializeInbox = async () => "";
