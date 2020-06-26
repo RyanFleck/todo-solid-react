@@ -67,31 +67,40 @@ export const createInitialFiles = async (webId) => {
     const documentUrl = await storageHelper.getAppStorage(webId);
 
     // Set up various paths relative to the game URL
-    const dataFilePath = `${documentUrl}data.ttl`;
-    const settingsFilePath = `${documentUrl}settings.ttl`;
+    const dataFilePath = `${documentUrl}/data.ttl`;
+    const settingsFilePath = `${documentUrl}/settings.ttl`;
 
     // Check if the tictactoe folder exists, if not then create it. This is where game files, the game inbox, and settings files are created by default
     const docFolderExists = await resourceExists(documentUrl);
     // https://vocab.org/open/#json "application/json"
     if (!docFolderExists) {
+      console.log("Document folder doesn't exist, creating...");
       await createDoc(data, {
         method: "PUT",
         headers: {
           "Content-Type": "text/turtle",
         },
       });
+    } else {
+      console.log("Document folder is already present on filesystem.");
     }
 
     // Check if data file exists, if not then create it. This file holds links to other people's games
     const dataFileExists = await resourceExists(dataFilePath);
     if (!dataFileExists) {
+      console.log("Creating data file...");
       await createDocument(dataFilePath);
+    } else {
+      console.log("Data file already exists.");
     }
 
     // Check if the settings file exists, if not then create it. This file is for general settings including the link to the game-specific inbox
     const settingsFileExists = await resourceExists(settingsFilePath);
     if (!settingsFileExists) {
+      console.log("Creating settings file...");
       await createDocument(settingsFilePath);
+    } else {
+      console.log("Settings file already exists.");
     }
 
     return true;

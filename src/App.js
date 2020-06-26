@@ -12,10 +12,17 @@ import {
 } from "@solid/react";
 import auth from "solid-auth-client";
 import data from "@solid/query-ldflex";
+import { AccessControlList } from "@inrupt/solid-react-components";
 import { fetchDocument, createDocument } from "tripledoc";
 import { solid, schema, foaf, space, rdf } from "rdf-namespaces";
 import { typeIndex } from "rdf-namespaces/dist/solid";
-import { getAppStorage } from "./utils/storage";
+import { checkSpecificAppPermission } from "./utils/permissions";
+import {
+  getAppStorage,
+  createInitialFiles,
+  storageHelper,
+} from "./utils/storage";
+import { createDoc, resourceExists, fetchLdflexDocument } from "./utils/ldflex-helper";
 
 const textDefault = "New item";
 const fakeData = [
@@ -37,38 +44,145 @@ const fakeData = [
   },
 ];
 
+const testData = JSON.stringify(
+  {
+    paramOne: "This stores the first parameter",
+    paramTwo: "This is the second of three parameters",
+    paramThree: 3,
+  },
+  null,
+  2
+);
+
+const testDoc = JSON.stringify(
+  {
+    paramOne: "This stores the first parameter",
+    paramTwo: "This is the second of three parameters",
+    paramThree: 3,
+  },
+  null,
+  2
+);
+
 /* Functions */
 
 async function buttonInitDocument() {
   console.log("button => Initializing document...");
-
-  const testDoc = JSON.stringify(
-    {
-      paramOne: "This stores the first parameter",
-      paramTwo: "This is the second of three parameters",
-      paramThree: 3,
-    },
-    null,
-    2
-  );
-
   const session = await auth.currentSession();
   const webId = session.webId;
   if (session && webId) {
     // The path to this storage is stored in constants.js
     const storage = await getAppStorage(webId);
+    const dataFilePath = `${storage}/data.json`;
+    const settingsFilePath = `${storage}/settings.json`;
+
+    const docFolderExists = await resourceExists(storage);
+    const dataFileExists = await resourceExists(dataFilePath);
+    const settingsFileExists = await resourceExists(settingsFilePath);
+
+
+    const hasWritePermission = await checkSpecificAppPermission(
+      webId,
+      AccessControlList.MODES.WRITE
+    );
     console.log(`Storage is at ${storage}`);
+    console.log("Creating initial files...");
+    if (!hasWritePermission) {
+      console.log("No write permissions detected.");
+      return;
+    }
+    console.log("Write permissions granted...");
+
+    console.log("Initializing document folder...");
+    
+    // https://vocab.org/open/#json "application/json"
+    if (!docFolderExists) {
+      console.log("Document folder doesn't exist, creating...");
+      await createDoc(data, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "text/turtle",
+        },
+      });
+    } else {
+      console.log("Document folder is already present on POD filesystem.");
+    }
+
+    // Check if data file exists, if not then create it. This file holds links to other people's games
+    if (!dataFileExists) {
+      console.log("Creating data file...");
+      const data = await createDocument(dataFilePath);
+      await data.save();
+    } else {
+      console.log("Data file already exists.");
+    }
+
+    // Check if the settings file exists, if not then create it. This file is for general settings including the link to the game-specific inbox
+    if (!settingsFileExists) {
+      console.log("Creating settings file...");
+      const settings = await createDocument(settingsFilePath);
+      await settings.save()
+    } else {
+      console.log("Settings file already exists.");
+    }
+
+    if(!(docFolderExists&&dataFileExists&&settingsFileExists)){
+      console.log("NEW DOCUMENTS WERE CREATED.");
+    }
+
+    console.log("Documents have been instantiated.");
   }
 }
+
+
+
 async function buttonSaveDocument() {
   console.log("button => Saving document...");
+  const session = await auth.currentSession();
+  const webId = session.webId;
+  if (session && webId) {
+    // The path to this storage is stored in constants.js
+    const storage = await getAppStorage(webId);
+    const dataFilePath = `${storage}/data.json`;
+    const settingsFilePath = `${storage}/settings.json`;
+
+    const docFolderExists = await resourceExists(storage);
+    const dataFileExists = await resourceExists(dataFilePath);
+    const settingsFileExists = await resourceExists(settingsFilePath);
+
+    if(!(docFolderExists&&dataFileExists&&settingsFileExists)){
+      console.log("Documents not found in POD. Creating...");
+      await buttonInitDocument();
+    }
+
+    console.log("Saving data and settings...");
+
+    const dataDoc = await fetchLdflexDocument(dataFilePath);
+    const settingsDoc = await fetchLdflexDocument(settingsFilePath);
+
+
+    console.log("Data Document:")
+    console.log(dataDoc);
+
+    
+
+  }
 }
+
+
+
 async function buttonLoadDocument() {
   console.log("button => Loading document...");
 }
+
+
+
 async function buttonDeleteDocument() {
   console.log("button => Deleting document...");
 }
+
+
+
 async function buttonPurgeAllDocuments() {
   console.log("button => Purging all documents...");
   const session = await auth.currentSession();
@@ -90,7 +204,7 @@ async function buttonPurgeAllDocuments() {
 
     for (let i = 0; i < todosDocumentItems.length; i++) {
       const text = await todosDocumentItems[i];
-      console.log(text.toString());
+      console.log(text);
     }
     await todosDocument.save();
   } else {
