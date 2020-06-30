@@ -30,7 +30,7 @@ export const createDocument = async (documentUri, body = "") => {
     const options = {
       method: "PUT",
       headers: {
-        "Content-Type": "text/json",
+        "Content-Type": "application/json",
       },
       body,
     };

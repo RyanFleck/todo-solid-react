@@ -22,7 +22,11 @@ import {
   createInitialFiles,
   storageHelper,
 } from "./utils/storage";
-import { createDoc, resourceExists, fetchLdflexDocument } from "./utils/ldflex-helper";
+import {
+  createDoc,
+  resourceExists,
+  fetchLdflexDocument,
+} from "./utils/ldflex-helper";
 
 const textDefault = "New item";
 const fakeData = [
@@ -46,7 +50,7 @@ const fakeData = [
 
 const testData = JSON.stringify(
   {
-    paramOne: "This stores the first parameter",
+    paramOne: "This data stores the first parameter",
     paramTwo: "This is the second of three parameters",
     paramThree: 3,
   },
@@ -54,9 +58,9 @@ const testData = JSON.stringify(
   2
 );
 
-const testDoc = JSON.stringify(
+const testSettings = JSON.stringify(
   {
-    paramOne: "This stores the first parameter",
+    paramOne: "This setting stores the first parameter",
     paramTwo: "This is the second of three parameters",
     paramThree: 3,
   },
@@ -67,7 +71,7 @@ const testDoc = JSON.stringify(
 /* Functions */
 
 async function buttonInitDocument() {
-  console.log("button => Initializing document...");
+  console.log("button => Initializing documents...");
   const session = await auth.currentSession();
   const webId = session.webId;
   if (session && webId) {
@@ -79,7 +83,6 @@ async function buttonInitDocument() {
     const docFolderExists = await resourceExists(storage);
     const dataFileExists = await resourceExists(dataFilePath);
     const settingsFileExists = await resourceExists(settingsFilePath);
-
 
     const hasWritePermission = await checkSpecificAppPermission(
       webId,
@@ -94,7 +97,7 @@ async function buttonInitDocument() {
     console.log("Write permissions granted...");
 
     console.log("Initializing document folder...");
-    
+
     // https://vocab.org/open/#json "application/json"
     if (!docFolderExists) {
       console.log("Document folder doesn't exist, creating...");
@@ -121,12 +124,12 @@ async function buttonInitDocument() {
     if (!settingsFileExists) {
       console.log("Creating settings file...");
       const settings = await createDocument(settingsFilePath);
-      await settings.save()
+      await settings.save();
     } else {
       console.log("Settings file already exists.");
     }
 
-    if(!(docFolderExists&&dataFileExists&&settingsFileExists)){
+    if (!(docFolderExists && dataFileExists && settingsFileExists)) {
       console.log("NEW DOCUMENTS WERE CREATED.");
     }
 
@@ -134,10 +137,8 @@ async function buttonInitDocument() {
   }
 }
 
-
-
 async function buttonSaveDocument() {
-  console.log("button => Saving document...");
+  console.log("button => Saving documents...");
   const session = await auth.currentSession();
   const webId = session.webId;
   if (session && webId) {
@@ -150,7 +151,7 @@ async function buttonSaveDocument() {
     const dataFileExists = await resourceExists(dataFilePath);
     const settingsFileExists = await resourceExists(settingsFilePath);
 
-    if(!(docFolderExists&&dataFileExists&&settingsFileExists)){
+    if (!(docFolderExists && dataFileExists && settingsFileExists)) {
       console.log("Documents not found in POD. Creating...");
       await buttonInitDocument();
     }
@@ -160,28 +161,107 @@ async function buttonSaveDocument() {
     const dataDoc = await fetchLdflexDocument(dataFilePath);
     const settingsDoc = await fetchLdflexDocument(settingsFilePath);
 
+    auth
+      .fetch(dataDoc, {
+        method: "PUT",
+        body: testData,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then(() => {
+        console.log("Saved data.");
+      })
+      .catch((e) => {
+        throw e;
+      });
 
-    console.log("Data Document:")
-    console.log(dataDoc);
-
-    
-
+    auth
+      .fetch(settingsDoc, {
+        method: "PUT",
+        body: testSettings,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then(() => {
+        console.log("Saved settings.");
+      })
+      .catch((e) => {
+        throw e;
+      });
   }
 }
 
-
-
 async function buttonLoadDocument() {
-  console.log("button => Loading document...");
+  console.log("button => Loading documents...");
+  const session = await auth.currentSession();
+  const webId = session.webId;
+  if (session && webId) {
+    // The path to this storage is stored in constants.js
+    const storage = await getAppStorage(webId);
+    const dataFilePath = `${storage}/data.json`;
+    const settingsFilePath = `${storage}/settings.json`;
+
+    const docFolderExists = await resourceExists(storage);
+    const dataFileExists = await resourceExists(dataFilePath);
+    const settingsFileExists = await resourceExists(settingsFilePath);
+
+    if (!(docFolderExists && dataFileExists && settingsFileExists)) {
+      console.log("Documents not found in POD. Creating...");
+      await buttonInitDocument();
+    }
+
+    console.log("Loading data and settings...");
+
+    //const dataDoc = await fetchLdflexDocument(dataFilePath);
+    //const settingsDoc = await fetchLdflexDocument(settingsFilePath);
+
+    const doc = await auth.fetch(dataFilePath);
+    const text = await doc.text();
+    console.log(text);
+  }
 }
-
-
 
 async function buttonDeleteDocument() {
-  console.log("button => Deleting document...");
+  console.log("button => Deleting documents...");
+  console.log("button => Saving documents...");
+  const session = await auth.currentSession();
+  const webId = session.webId;
+  if (session && webId) {
+    // The path to this storage is stored in constants.js
+    const storage = await getAppStorage(webId);
+    const dataFilePath = `${storage}/data.json`;
+    const settingsFilePath = `${storage}/settings.json`;
+
+    const dataFileExists = await resourceExists(dataFilePath);
+    const settingsFileExists = await resourceExists(settingsFilePath);
+
+    if (!(dataFileExists && settingsFileExists)) {
+      console.log("Documents not found in POD.");
+      return;
+    }
+
+    auth
+      .fetch(dataFilePath, { method: "DELETE" })
+      .then(() => {
+        console.log("Data file deleted.");
+      })
+      .catch((e) => {
+        throw e;
+      });
+    auth
+      .fetch(settingsFilePath, { method: "DELETE" })
+      .then(() => {
+        console.log("Settings file deleted.");
+      })
+      .catch((e) => {
+        throw e;
+      });
+
+    console.log("Saving data and settings...");
+  }
 }
-
-
 
 async function buttonPurgeAllDocuments() {
   console.log("button => Purging all documents...");
